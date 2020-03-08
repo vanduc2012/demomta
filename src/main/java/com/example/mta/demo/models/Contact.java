@@ -1,6 +1,7 @@
 package com.example.mta.demo.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@ApiModel(description = "All details about the Employee. ")
 public class Contact implements Serializable {
     private static final long serialVersionUID = 1L;
 

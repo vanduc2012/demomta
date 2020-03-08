@@ -3,6 +3,10 @@ package com.example.mta.demo.controllers;
 
 import com.example.mta.demo.models.Contact;
 import com.example.mta.demo.services.ContactService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +22,21 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
+@Api(value = "Contact Management System", description = "Operations pertaining to")
 public class ContactController {
 
     public static Logger logger = LoggerFactory.getLogger(ContactController.class);
     @Autowired
     private ContactService contactService;
 
+    @ApiOperation(value = "View a list of available contact")
+
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved list"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    })
     @RequestMapping(value = "/contact", method = RequestMethod.GET)
     public ResponseEntity<List<Contact>> findAllContact(){
         List<Contact> contactList = contactService.getAll();
@@ -33,6 +46,7 @@ public class ContactController {
         return new ResponseEntity<List<Contact>>(contactList, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "View contact by id")
     @RequestMapping(value = "/contact/{id}", method = RequestMethod.GET)
     public ResponseEntity<Contact> findContact(@PathVariable("id") long id) {
         Optional<Contact> contact= contactService.getById(id);
@@ -42,6 +56,7 @@ public class ContactController {
         return new ResponseEntity<>(contact.get(), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "create a contact")
     @RequestMapping(value = "/contact/{id}", method = RequestMethod.POST)
     public ResponseEntity<Contact> createProduct(@RequestBody Contact contact, UriComponentsBuilder builder){
         contactService.create(contact);
@@ -51,6 +66,7 @@ public class ContactController {
         return new ResponseEntity<>(contact, HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "update a contact")
     @RequestMapping(value = "/contact/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Contact> updateContact(@PathVariable(value = "id") Long id,
                                                  @Valid @RequestBody Contact contact) {
@@ -69,6 +85,7 @@ public class ContactController {
         return new ResponseEntity<>(currentContact.get(), HttpStatus.NO_CONTENT);
     }
 
+    @ApiOperation(value = "delete a contact")
     @RequestMapping(value = "/contact/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Contact> deleteContact(@PathVariable(value = "id") Long id) {
         Optional<Contact> contact = contactService.getById(id);
