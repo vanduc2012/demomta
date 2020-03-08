@@ -24,7 +24,7 @@ public class ContactController {
     @Autowired
     private ContactService contactService;
 
-    @RequestMapping(value = "/contact/", method = RequestMethod.GET)
+    @RequestMapping(value = "/contact", method = RequestMethod.GET)
     public ResponseEntity<List<Contact>> findAllContact(){
         List<Contact> contactList = contactService.getAll();
         if (contactList.isEmpty()){
