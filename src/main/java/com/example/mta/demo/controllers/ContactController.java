@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -48,7 +49,7 @@ public class ContactController {
 
     @ApiOperation(value = "View contact by id")
     @RequestMapping(value = "/contact/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Contact> findContact(@PathVariable("id") long id) {
+    public ResponseEntity<Contact> findContact(@PathVariable("id") Long id) {
         Optional<Contact> contact= contactService.getById(id);
         if(!contact.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -57,11 +58,12 @@ public class ContactController {
     }
 
     @ApiOperation(value = "create a contact")
-    @RequestMapping(value = "/contact/{id}", method = RequestMethod.POST)
-    public ResponseEntity<Contact> createProduct(@RequestBody Contact contact, UriComponentsBuilder builder){
+    @RequestMapping(value = "/contact", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Contact> createContact(@Valid @RequestBody Contact contact, UriComponentsBuilder builder){
         contactService.create(contact);
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(builder.path("/products/{id}")
+        headers.setLocation(builder.path("/contact}")
                 .buildAndExpand(contact.getId()).toUri());
         return new ResponseEntity<>(contact, HttpStatus.CREATED);
     }
@@ -75,7 +77,7 @@ public class ContactController {
         if (!currentContact.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        currentContact.get().setId(contact.getId());
+        currentContact.get().setId(currentContact.get().getId());
         currentContact.get().setName(contact.getName());
         currentContact.get().setDob(contact.getDob());
         currentContact.get().setAge(contact.getAge());

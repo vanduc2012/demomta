@@ -22,7 +22,6 @@ public class Contact implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank
     @Column(name = "id", nullable = false)
     private Long id;
 
