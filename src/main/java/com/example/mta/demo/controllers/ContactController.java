@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
-@Api(value = "Contact Management System", description = "Operations pertaining to")
+@Api(value = "Contact Management System", description = "Test API contact")
 public class ContactController {
 
     public static Logger logger = LoggerFactory.getLogger(ContactController.class);
