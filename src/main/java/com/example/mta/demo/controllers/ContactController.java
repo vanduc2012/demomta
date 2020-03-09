@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +27,7 @@ import java.util.Optional;
 @RequestMapping("/api")
 @Api(value = "Contact Management System", description = "Test API contact")
 public class ContactController {
+
 
     public static Logger logger = LoggerFactory.getLogger(ContactController.class);
     @Autowired
@@ -52,7 +55,7 @@ public class ContactController {
     public ResponseEntity<Contact> findContact(@PathVariable("id") Long id) {
         Optional<Contact> contact= contactService.getById(id);
         if(!contact.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(contact.get(), HttpStatus.OK);
     }
@@ -61,6 +64,8 @@ public class ContactController {
     @RequestMapping(value = "/contact", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Contact> createContact(@Valid @RequestBody Contact contact, UriComponentsBuilder builder){
+        contact.setCreatedAt(contactService.getTimestamp().toLocalDateTime());
+        contact.setUpdatedAt(contactService.getTimestamp().toLocalDateTime());
         contactService.create(contact);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/contact}")
@@ -72,8 +77,8 @@ public class ContactController {
     @RequestMapping(value = "/contact/{id}", method = RequestMethod.PUT)
     public ResponseEntity<Contact> updateContact(@PathVariable(value = "id") Long id,
                                                  @Valid @RequestBody Contact contact) {
-        Optional<Contact> currentContact = contactService.getById(id);
 
+        Optional<Contact> currentContact = contactService.getById(id);
         if (!currentContact.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -82,7 +87,7 @@ public class ContactController {
         currentContact.get().setDob(contact.getDob());
         currentContact.get().setAge(contact.getAge());
         currentContact.get().setEmail(contact.getEmail());
-
+        currentContact.get().setUpdatedAt(contactService.getTimestamp().toLocalDateTime());
         contactService.update(currentContact.get());
         return new ResponseEntity<>(currentContact.get(), HttpStatus.NO_CONTENT);
     }
