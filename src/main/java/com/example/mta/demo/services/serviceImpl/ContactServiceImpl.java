@@ -6,6 +6,9 @@ import com.example.mta.demo.services.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,8 +45,10 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public Contact save(Contact contact) {
-        contactRepository.save(contact);
-        return contact;
+    public Timestamp getTimestamp() {
+        Date date = new Date();
+        long time = date.getTime();
+        Timestamp ts = new Timestamp(time);
+        return  ts;
     }
 }

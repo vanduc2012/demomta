@@ -3,6 +3,7 @@ package com.example.mta.demo.services;
 import com.example.mta.demo.models.Contact;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,5 +14,5 @@ public interface ContactService {
     Contact create(Contact contact);
     Contact update(Contact contact);
     void delete(Contact contact);
-    Contact save(Contact contact);
+    Timestamp getTimestamp();
 }
