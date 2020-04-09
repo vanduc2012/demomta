@@ -4,14 +4,16 @@ spring:
   profiles:
     active: dev
   datasource:
-    url:
-      jdbc:mysql://baac3d3e572fba:32b37ff9251e59a@us-cdbr-iron-east-04.cleardb.net/heroku_b31ef5fea691291?reconnect=true&useUnicode=yes&characterEncoding=utf8&serverTimezone=UTC
+#    url:
+#      jdbc:mysql://baac3d3e572fba:32b37ff9251e59a@us-cdbr-iron-east-04.cleardb.net/
+#      heroku_b31ef5fea691291?reconnect=true&useUnicode=yes&characterEncoding=utf8&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: baac3d3e572fba
-    password: 32b37ff9251e59a
+#    username: baac3d3e572fba
+#    password: 32b37ff9251e59a
+    url: jdbc:mysql://localhost:3306/pro_mta?reconnect=true&useUnicode=yes&characterEncoding=utf8&serverTimezone=UTC
+    username: root
+    password:
     validationQueryP: SELECT 1
-
-
 #  Hibernate Configuration:
   jpa:
     hibernate.ddl-auto: update
@@ -20,6 +22,13 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
         connection:
           pool_size: 10
-
+  redis:
+    host: localhost
+    port: 6379
+    pass:
 security:
   ignored: none
+
+jwt:
+  secret: vanduc2012
+

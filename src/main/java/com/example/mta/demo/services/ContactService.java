@@ -14,5 +14,4 @@ public interface ContactService {
     Contact create(Contact contact);
     Contact update(Contact contact);
     void delete(Contact contact);
-    Timestamp getTimestamp();
 }
